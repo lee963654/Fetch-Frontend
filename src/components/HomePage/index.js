@@ -2,6 +2,7 @@ import React from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { useHistory } from "react-router-dom"
 import { logoutThunk } from "../../store/session"
+import Search from "../Search"
 
 export default function HomePage() {
     const history = useHistory()
@@ -31,7 +32,7 @@ export default function HomePage() {
                     Log Out
                 </button>
             </div>
-
+            <Search />
         </div>
     )
 }
