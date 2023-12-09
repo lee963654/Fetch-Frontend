@@ -23,6 +23,7 @@ export default function LoginPage() {
         }
         const response = await fetch("https://frontend-take-home-service.fetch.com/auth/login", requestOptions)
         if (response.ok) {
+            console.log("response login", response)
             dispatch(loginThunk(user))
             history.push("/")
         }

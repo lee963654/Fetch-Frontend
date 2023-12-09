@@ -23,6 +23,10 @@ export const logoutThunk = () => async (dispatch) => {
     dispatch(removeUser())
 }
 
+export const restoreUser = (user) => async (dispatch) => {
+    dispatch(setUser(user))
+}
+
 
 const initialState = { user: null }
 
