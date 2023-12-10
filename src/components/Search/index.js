@@ -19,7 +19,7 @@ export default function Search() {
 
 
 
-    const handleSearch = async () => {
+    const handleSearch = async (pageNum) => {
         console.log("INSIDE THE HANDLE SEARCH")
 
         const requestOptions = {
@@ -32,7 +32,10 @@ export default function Search() {
         const selectedBreed = breed ? `breeds=${breed}` : ""
         const selectedSort = `sort=breed:${sortBreed}`
         const selectedSize = `size=${resultsPerPage}`
-        const selectedCurrentPage = `from=${resultsPerPage * currentPage}`
+
+        const selectedCurrentPage = `from=${resultsPerPage * pageNum}`
+
+
         if (selectedAgeMin) queryParams.push(selectedAgeMin)
         if (selectedAgeMax) queryParams.push(selectedAgeMax)
         if (selectedBreed) queryParams.push(selectedBreed)
@@ -40,13 +43,9 @@ export default function Search() {
         queryParams.push(selectedSort)
         queryParams.push(selectedSize)
         const selectedQueryParams = queryParams.join("&")
-        console.log("RIGHT BEFORE THE FIRST AWAIT FETCH")
-        const response = await fetch(`https://frontend-take-home-service.fetch.com/dogs/search?${selectedQueryParams}`, requestOptions)
-        console.log("RIGHT AFTER THE FIRST AAWAIT FETCH")
-        console.log("THIS IS THE PAGE NUM INSIDE THE HANDLE SEARCH ", selectedCurrentPage)
-        console.log("THIS IS THE CURRENT PAGE INSIDE THE HANDLE SEARCH", currentPage)
-        const dogSearchResults = await response.json()
 
+        const response = await fetch(`https://frontend-take-home-service.fetch.com/dogs/search?${selectedQueryParams}`, requestOptions)
+        const dogSearchResults = await response.json()
         setTotalResults(dogSearchResults.total)
 
         const requestOptionsPost = {
@@ -58,20 +57,68 @@ export default function Search() {
             credentials: "include",
         }
         const responseDogInfo = await fetch("https://frontend-take-home-service.fetch.com/dogs", requestOptionsPost)
+        console.log("THIS IS THE DOG INFO", response)
+        console.log("THIS IS THE DOG INFO AFTER RESPONSE", dogSearchResults)
         const dogInfoResults = await responseDogInfo.json()
-        console.log("THIS IS THE DOG INFO IN THE SUBMIT", dogInfoResults)
+
         setSearchResults(dogInfoResults)
+        console.log("THIS IS THE SEARCH RESULTS", searchResults)
     }
 
+    const handleMatch = async () => {
+        let dogArray = []
 
-    const handleStartSearch = () => {
-        console.log("INSIDE THE HANDLE START SEARCH PAGE NUM before", currentPage)
+        const requestOptions = {
+            method: "GET",
+            credentials: "include",
+        }
+        const queryParams = []
+        const selectedAgeMin = ageMin ? `ageMin=${ageMin}` : ""
+        const selectedAgeMax = ageMax ? `ageMax=${ageMax}` : ""
+        const selectedBreed = breed ? `breeds=${breed}` : ""
+        const selectedSort = `sort=breed:${sortBreed}`
+        const selectedSize = `size=100`
+        if (selectedAgeMin) queryParams.push(selectedAgeMin)
+        if (selectedAgeMax) queryParams.push(selectedAgeMax)
+        if (selectedBreed) queryParams.push(selectedBreed)
+        queryParams.push(selectedSort)
+        queryParams.push(selectedSize)
 
-        // setCurrentPage(0)
-        console.log("INSIDE THE HANDLE START SEARCH PAGE NUM after", currentPage)
-        handleSearch()
-        return
+        const selectedQueryParams = queryParams.join("&")
+        const response = await fetch(`https://frontend-take-home-service.fetch.com/dogs/search?${selectedQueryParams}`, requestOptions)
+        console.log("THIS IS THE RESPONSE IN THE HANDLE MATCH", response)
+        const dogMatchResults = await response.json()
+        console.log("THIS IS THE DOG MATCH RESULTS IN HANDLE MATCH", dogMatchResults)
+        dogArray = [...dogArray, ...dogMatchResults.resultIds]
+        console.log("THIS IS THE FIRST PUSH INTO THE DOG ARRAY", dogArray)
+        console.log("THIS IS THE NEXT", dogMatchResults.next)
+
+        let tempURL = await fetch(`https://frontend-take-home-service.fetch.com${dogMatchResults.next}`, requestOptions)
+        console.log("THIS IS THE TEMP URL", tempURL)
+
+        // while (dogArray.length < totalResults) {
+
+        //     const dogResults = await tempURL.json()
+        //     dogArray = [...dogArray, ...dogResults.resultIds]
+        //     tempURL = await fetch(`https://frontend-take-home-service.fetch.com${dogResults.next}`, requestOptions)
+
+        // }
+        console.log("THIS IS THE DOG ARRAY IN THE MATCH", dogArray)
+
+        // const matchOptions = {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json"
+        //     },
+        //     body: JSON.stringify(dogMatchResults.resultIds),
+        //     credentials: "include",
+        // }
+        // const singleDogMatch = await fetch(`https://frontend-take-home-service.fetch.com/dogs/match`, matchOptions)
+        // console.log("THIS IS THE SINGLE DOG MATCH", singleDogMatch)
+        // const matchedDog = await singleDogMatch.json()
+        // console.log("THIS IS THE MATCH DOG", matchedDog)
     }
+
 
 
     useEffect(() => {
@@ -80,8 +127,7 @@ export default function Search() {
 
 
 
-    console.log("CHECKING THE SEARCH RESULTS ON SEARCH COMPONENT", searchResults)
-    console.log("CHECKING THE PAGE NUMBER ON SEARCH COMPONENT", currentPage)
+
     return (
         <div>
             <div>
@@ -136,7 +182,8 @@ export default function Search() {
                         </option>
                     </select>
                 </label>
-                <button onClick={handleStartSearch}>Search</button>
+                <button onClick={() => handleSearch(0)}>Search</button>
+                <button onClick={handleMatch}>Match!</button>
             </div>
             <div>
                 This is the search results
@@ -144,7 +191,7 @@ export default function Search() {
             </div>
             <div>
                 This is the pagination
-                <Pagination resultsPerPage={resultsPerPage} totalResults={totalResults} handleSearch={handleSearch} setCurrentPage={setCurrentPage}/>
+                <Pagination resultsPerPage={resultsPerPage} totalResults={totalResults} handleSearch={handleSearch} setCurrentPage={setCurrentPage} />
             </div>
         </div>
     )
