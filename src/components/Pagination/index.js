@@ -1,22 +1,29 @@
-import React from "react"
+import React, { useEffect } from "react"
 
-export default function Pagination ({resultsPerPage, totalResults, paginateNumber }) {
+export default function Pagination({ resultsPerPage, totalResults, handleSearch, setCurrentPage }) {
     const pageNumbers = []
     for (let i = 1; i <= Math.ceil(totalResults / resultsPerPage); i++) {
         pageNumbers.push(i)
     }
 
+    useEffect(() => {
 
+    }, [setCurrentPage])
 
     return (
+
+
         <nav>
             <ul>
-                {pageNumbers.map(number => (
+                {pageNumbers && pageNumbers.map(number => (
                     <li key={number}>
-                        <a onClick={paginateNumber(number)}>{number}</a>
+                        <a onClick={() => { console.log("this is the page number", number); setCurrentPage(number - 1); handleSearch() }}>{number}</a>
                     </li>
                 ))}
             </ul>
         </nav>
+
+
+
     )
 }
