@@ -30,7 +30,7 @@ export default function HomePage() {
     return (
         <div>
             <div>
-                <h1>Welcome {sessionUser.name}!</h1>
+                <h1>Welcome!</h1>
                 <button onClick={handleLogout}>
                     Log Out
                 </button>

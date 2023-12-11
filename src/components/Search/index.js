@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 import SearchResults from "../SearchResults"
 import Pagination from "../Pagination"
 import { useHistory } from "react-router-dom"
+import { logoutThunk } from "../../store/session"
 
 
 export default function Search() {
@@ -10,7 +12,6 @@ export default function Search() {
     const [zipCode, setZipCode] = useState("")
     const [searchResults, setSearchResults] = useState([])
     const [loading, setLoading] = useState(false)
-    const [currentPage, setCurrentPage] = useState(0)
     const [resultsPerPage, setResultsPerPage] = useState(25)
     const [totalResults, setTotalResults] = useState(0)
     const [ageMin, setAgeMin] = useState("")
@@ -19,16 +20,21 @@ export default function Search() {
     const [pageNumbers, setPageNumbers] = useState([])
 
     const history = useHistory()
+    const dispatch = useDispatch()
 
+    const requestOptions = {
+        method: "GET",
+        credentials: "include",
+    }
 
 
     const handleSearch = async (pageNum) => {
         console.log("INSIDE THE HANDLE SEARCH")
 
-        const requestOptions = {
-            method: "GET",
-            credentials: "include",
-        }
+        // const requestOptions = {
+        //     method: "GET",
+        //     credentials: "include",
+        // }
         const queryParams = []
         const selectedAgeMin = ageMin ? `ageMin=${ageMin}` : ""
         const selectedAgeMax = ageMax ? `ageMax=${ageMax}` : ""
@@ -60,21 +66,18 @@ export default function Search() {
             credentials: "include",
         }
         const responseDogInfo = await fetch("https://frontend-take-home-service.fetch.com/dogs", requestOptionsPost)
-        console.log("THIS IS THE DOG INFO", response)
-        console.log("THIS IS THE DOG INFO AFTER RESPONSE", dogSearchResults)
         const dogInfoResults = await responseDogInfo.json()
 
         setSearchResults(dogInfoResults)
-        console.log("THIS IS THE SEARCH RESULTS", searchResults)
     }
 
     const handleMatch = async () => {
-        let dogArray = []
+        // let dogArray = []
 
-        const requestOptions = {
-            method: "GET",
-            credentials: "include",
-        }
+        // const requestOptions = {
+        //     method: "GET",
+        //     credentials: "include",
+        // }
         const queryParams = []
         const selectedAgeMin = ageMin ? `ageMin=${ageMin}` : ""
         const selectedAgeMax = ageMax ? `ageMax=${ageMax}` : ""
@@ -89,45 +92,46 @@ export default function Search() {
 
         const selectedQueryParams = queryParams.join("&")
         const response = await fetch(`https://frontend-take-home-service.fetch.com/dogs/search?${selectedQueryParams}`, requestOptions)
-        console.log("THIS IS THE RESPONSE IN THE HANDLE MATCH", response)
+
         const dogMatchResults = await response.json()
-        console.log("THIS IS THE DOG MATCH RESULTS IN HANDLE MATCH", dogMatchResults)
 
-        const currentTotalMatches = dogMatchResults.total
 
-        dogArray = [...dogArray, ...dogMatchResults.resultIds]
-        console.log("THIS IS THE FIRST PUSH INTO THE DOG ARRAY", dogArray)
-        console.log("THIS IS THE NEXT", dogMatchResults.next)
+        // const currentTotalMatches = dogMatchResults.total
+        // dogArray = [...dogArray, ...dogMatchResults.resultIds]
+        // let tempURL = await fetch(`https://frontend-take-home-service.fetch.com${dogMatchResults.next}`, requestOptions)
 
-        let tempURL = await fetch(`https://frontend-take-home-service.fetch.com${dogMatchResults.next}`, requestOptions)
-        console.log("THIS IS THE TEMP URL", tempURL)
-
-        console.log("THIS IS THE DOG ARRAY IN THE MATCH AT THE END OF THE LOOP", dogArray)
 
         const matchOptions = {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
             },
-            body: JSON.stringify(dogArray),
+            body: JSON.stringify([...dogMatchResults.resultIds]),
             credentials: "include",
         }
         const singleDogMatch = await fetch(`https://frontend-take-home-service.fetch.com/dogs/match`, matchOptions)
-        console.log("THIS IS THE SINGLE DOG MATCH", singleDogMatch)
+
         const matchedDog = await singleDogMatch.json()
-        console.log("THIS IS THE MATCH DOG", matchedDog)
+
         history.push(`/dogs/${matchedDog.match}`)
 
     }
 
-
-
     useEffect(() => {
-        const allBreeds = fetch("https://frontend-take-home-service.fetch.com/dogs/breeds", { credentials: "include" }).then((response) => response.json()).then((breeds) => setBreedList(breeds))
+        // const allBreeds = fetch("https://frontend-take-home-service.fetch.com/dogs/breeds", { credentials: "include" }).then((response) => response.json()).then((breeds) => setBreedList(breeds))
+        const gettingAllBreeds = async () => {
+            const allBreeds = await fetch("https://frontend-take-home-service.fetch.com/dogs/breeds", { credentials: "include" })
+            console.log("IN THE USEEFFECT FOR ALL BREEDS", allBreeds)
+            if (allBreeds.ok) {
+                const breedRes = await allBreeds.json()
+                setBreedList(breedRes)
+            } else {
+                dispatch(logoutThunk())
+                history.push("/login")
+            }
+        }
+        gettingAllBreeds()
     }, [searchResults, totalResults])
-
-
-
 
     return (
         <div>
@@ -192,7 +196,7 @@ export default function Search() {
             </div>
             <div>
                 This is the pagination
-                <Pagination resultsPerPage={resultsPerPage} totalResults={totalResults} handleSearch={handleSearch} setCurrentPage={setCurrentPage} />
+                <Pagination resultsPerPage={resultsPerPage} totalResults={totalResults} handleSearch={handleSearch} />
             </div>
         </div>
     )

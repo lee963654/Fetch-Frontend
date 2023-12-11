@@ -10,8 +10,8 @@ export default function DogPage() {
 
     const [dog, setDog] = useState({})
 
-    const { age, breed, id, img, name, zip_code } = dog
-    const {email} = sessionUser
+    // const { age, breed, id, img, name, zip_code } = dog
+    // const {email} = sessionUser
 
     useEffect(() => {
         const getMatchedDogInfo = async () => {
@@ -35,24 +35,24 @@ export default function DogPage() {
 
     return (
         <div>
-            <h1>Congradulations! You have matched with {name}!</h1>
+            <h1>Congradulations! You have matched with {dog.name}!</h1>
             <div>
                 <p>
-                    {name}
+                    {dog.name}
                 </p>
                 <p>
-                    {breed}
+                    {dog.breed}
                 </p>
                 <p>
-                    {age}
+                    {dog.age}
                 </p>
                 <p>
-                    {zip_code}
+                    {dog.zip_code}
                 </p>
-                <img src={img} style={{width: 350, height: 350}} alt={name}></img>
+                <img src={dog.img} style={{width: 350, height: 350}} alt={dog.name}></img>
             </div>
             <button onClick={() => history.push("/")}>Back to Searches</button>
-            <button onClick={() => alert(`An email has been sent to ${email} on how to bring ${name} home!`)}>Bring {name} home!</button>
+            <button onClick={() => alert(`An email has been sent to ${sessionUser.email} on how to bring ${dog.name} home!`)}>Bring {dog.name} home!</button>
         </div>
     )
 }

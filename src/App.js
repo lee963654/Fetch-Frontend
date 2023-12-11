@@ -7,19 +7,20 @@ import { restoreUser } from "./store/session";
 import DogPage from "./components/DogPage";
 
 
+
 function App() {
   const dispatch = useDispatch()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const sessionUser = useSelector(((state) => state.session.user))
 
-  // useEffect(() => {
-  //   if(sessionUser) {
-  //     dispatch(restoreUser(sessionUser)).then(() => setIsLoggedIn(true))
-  //   }
-  // }, [dispatch])
+  useEffect(() => {
+    dispatch(restoreUser()).then(() => setIsLoggedIn(true))
+
+  }, [dispatch])
 
   return (
     <div>
+      {isLoggedIn && (
       <Switch>
         <Route exact path = "/login">
           <LoginPage />
@@ -31,6 +32,9 @@ function App() {
           <DogPage />
         </Route>
       </Switch>
+      )
+
+      }
     </div>
   );
 }
