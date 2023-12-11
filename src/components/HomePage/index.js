@@ -19,15 +19,18 @@ export default function HomePage() {
         if (response.ok) {
             dispatch(logoutThunk())
             history.push("/login")
+        } else {
+            dispatch(logoutThunk())
+            history.push("/login")
         }
     }
 
-    if (!sessionUser) return history.push("/login")
+
 
     return (
         <div>
             <div>
-                HomePage
+                <h1>Welcome {sessionUser.name}!</h1>
                 <button onClick={handleLogout}>
                     Log Out
                 </button>

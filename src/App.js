@@ -4,6 +4,7 @@ import { Route, Switch } from "react-router-dom"
 import LoginPage from "./components/LoginPage";
 import HomePage from "./components/HomePage";
 import { restoreUser } from "./store/session";
+import DogPage from "./components/DogPage";
 
 
 function App() {
@@ -25,6 +26,9 @@ function App() {
         </Route>
         <Route exact path = "/">
           <HomePage />
+        </Route>
+        <Route exact path = "/dogs/:dogId">
+          <DogPage />
         </Route>
       </Switch>
     </div>

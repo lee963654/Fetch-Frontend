@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react"
 import SearchResults from "../SearchResults"
 import Pagination from "../Pagination"
+import { useHistory } from "react-router-dom"
 
 
 export default function Search() {
@@ -16,6 +17,8 @@ export default function Search() {
     const [ageMax, setAgeMax] = useState("")
     const [sortBreed, setSortBreed] = useState("asc")
     const [pageNumbers, setPageNumbers] = useState([])
+
+    const history = useHistory()
 
 
 
@@ -89,6 +92,9 @@ export default function Search() {
         console.log("THIS IS THE RESPONSE IN THE HANDLE MATCH", response)
         const dogMatchResults = await response.json()
         console.log("THIS IS THE DOG MATCH RESULTS IN HANDLE MATCH", dogMatchResults)
+
+        const currentTotalMatches = dogMatchResults.total
+
         dogArray = [...dogArray, ...dogMatchResults.resultIds]
         console.log("THIS IS THE FIRST PUSH INTO THE DOG ARRAY", dogArray)
         console.log("THIS IS THE NEXT", dogMatchResults.next)
@@ -96,27 +102,22 @@ export default function Search() {
         let tempURL = await fetch(`https://frontend-take-home-service.fetch.com${dogMatchResults.next}`, requestOptions)
         console.log("THIS IS THE TEMP URL", tempURL)
 
-        // while (dogArray.length < totalResults) {
+        console.log("THIS IS THE DOG ARRAY IN THE MATCH AT THE END OF THE LOOP", dogArray)
 
-        //     const dogResults = await tempURL.json()
-        //     dogArray = [...dogArray, ...dogResults.resultIds]
-        //     tempURL = await fetch(`https://frontend-take-home-service.fetch.com${dogResults.next}`, requestOptions)
+        const matchOptions = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(dogArray),
+            credentials: "include",
+        }
+        const singleDogMatch = await fetch(`https://frontend-take-home-service.fetch.com/dogs/match`, matchOptions)
+        console.log("THIS IS THE SINGLE DOG MATCH", singleDogMatch)
+        const matchedDog = await singleDogMatch.json()
+        console.log("THIS IS THE MATCH DOG", matchedDog)
+        history.push(`/dogs/${matchedDog.match}`)
 
-        // }
-        console.log("THIS IS THE DOG ARRAY IN THE MATCH", dogArray)
-
-        // const matchOptions = {
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json"
-        //     },
-        //     body: JSON.stringify(dogMatchResults.resultIds),
-        //     credentials: "include",
-        // }
-        // const singleDogMatch = await fetch(`https://frontend-take-home-service.fetch.com/dogs/match`, matchOptions)
-        // console.log("THIS IS THE SINGLE DOG MATCH", singleDogMatch)
-        // const matchedDog = await singleDogMatch.json()
-        // console.log("THIS IS THE MATCH DOG", matchedDog)
     }
 
 
@@ -183,10 +184,10 @@ export default function Search() {
                     </select>
                 </label>
                 <button onClick={() => handleSearch(0)}>Search</button>
-                <button onClick={handleMatch}>Match!</button>
+                <button disabled={totalResults > 100 || totalResults === 0} onClick={handleMatch}>Match!</button>
             </div>
             <div>
-                This is the search results
+                {totalResults > 0 && <p>Found {totalResults} Dogs!</p>}
                 <SearchResults results={searchResults} />
             </div>
             <div>
