@@ -1,1 +1,25 @@
 /* TODO Add site wide styles */
+* {
+    font-family: "Fira Sans", sans-serif;
+}
+
+button {
+    width: 5rem;
+    height: 30px;
+    background-color: rgb(252, 165, 3);
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+html {
+    background-color: rgb(238, 204, 11);
+    background-image: linear-gradient(rgb(238, 204, 11), rgb(247, 246, 246));
+    height: 100%;
+}
+
+input {
+    height: 1rem;
+    width: 10rem;
+
+}

@@ -1,0 +1,51 @@
+.errors {
+    color: red;
+}
+
+.form-labels {
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    width: 20rem;
+    height: 7rem
+}
+
+.form-labels > label {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    height: 50rem;
+}
+
+.login-page-container > section {
+    width: 25rem;
+    margin-bottom: 1rem;
+}
+
+.login-page-container > form {
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    height: 10rem;
+
+}
+
+/* .login-page-container > form > label {
+    margin-top: .5rem;
+} */
+
+/* .login-page-container > form > button {
+    position: relative;
+    top: 20px;
+} */
