@@ -29,7 +29,7 @@ export default function Search() {
 
 
     const handleSearch = async (pageNum) => {
-        console.log("INSIDE THE HANDLE SEARCH")
+        console.log("INSIDE THE HANDLE SEARCH, THIS IS THE PAGE NUM", pageNum)
 
         // const requestOptions = {
         //     method: "GET",
@@ -195,7 +195,6 @@ export default function Search() {
                 <SearchResults results={searchResults} />
             </div>
             <div>
-                This is the pagination
                 <Pagination resultsPerPage={resultsPerPage} totalResults={totalResults} handleSearch={handleSearch} />
             </div>
         </div>

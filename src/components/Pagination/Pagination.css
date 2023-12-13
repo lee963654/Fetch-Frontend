@@ -1,0 +1,10 @@
+
+
+.page-number-container {
+    list-style-type: none;
+    display: flex;
+}
+
+.page-number-highlight {
+    background-color: rgba(204, 204, 29, 0.589);
+}
