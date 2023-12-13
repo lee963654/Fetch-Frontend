@@ -49,6 +49,8 @@ export default function Pagination({ resultsPerPage, totalResults, handleSearch 
         const pageBlockStart = () => {
             console.log("TESTING THE PAGE BLOCK START FGUNCTION")
             const lastPage = pageNumbers[pageNumbers.length - 1]
+            console.log("THIS IS THE LAST PAGE VARIABLE", lastPage)
+            console.log("THIS IS THE PAGE VARIABLE", page)
             if (page < 10 || page === 0) {
                 setCurrentPageStart(0)
                 setCurrentPageEnd(11)
@@ -70,19 +72,17 @@ export default function Pagination({ resultsPerPage, totalResults, handleSearch 
                 return
             }
             if (page + 1 === lastPage) {
-                const getFirstDigit = String(page).charAt(0)
-                const stringFirstDigit = `${getFirstDigit - 1}9`
-                const currStart = Number(stringFirstDigit)
-                console.log("THE CURR START IN THE LAST STEP", currStart)
-                setCurrentPageStart(currStart)
-                setCurrentPageEnd(currStart + 12)
-                console.log("IN THE LAST PAGE SETUP")
+                const newStartNum = ((Math.floor(page / 10)) * 10) - 1
+                console.log("INSIDE THE LAST PAGE IF BLOCK")
+                setCurrentPageStart(newStartNum)
+                setCurrentPageEnd(newStartNum + 12)
+                return
             }
-
-            console.log("CHECKING THE LAST PAGE IN THE USEEFFECT", lastPage)
         }
         pageBlockStart()
+
     }, [page])
+    console.log("THIS IS THE INDEX OF THE CURRENT PAGE IN THE ARRAY", pageNumbers.slice(currentPageStart, currentPageEnd).indexOf(page))
     console.log("THE CURR PAGE START AND END", currentPageStart, currentPageEnd)
     console.log("WE ARE SLICING THE PAGE NUMBERS BLOCK", pageNumbers.slice(currentPageStart, currentPageEnd))
 
@@ -100,11 +100,23 @@ export default function Pagination({ resultsPerPage, totalResults, handleSearch 
                         </li>
                     </div>
                 }
-                {pageNumbers && pageNumbers.map(number => (
+                {/* {pageNumbers && pageNumbers.map(number => (
                     <li key={number} className={"page-number" + (number - 1 === page ? "-highlight" : "")}>
                         <a onClick={() => { setPage(number - 1); handleSearch(number - 1) }}>{number}</a>
                     </li>
-                ))}
+                ))} */}
+                {pageNumbers && pageNumbers.length < 12 ? pageNumbers.map(number => (
+                    <li key={number} className={"page-number" + (number - 1 === page ? "-highlight" : "")}>
+                        <a onClick={() => { setPage(number - 1); handleSearch(number - 1) }}>{number}</a>
+                    </li>
+                ))
+                    :
+                    pageNumbers.slice(currentPageStart, currentPageEnd).map(number => (
+                        <li key={number} className={"page-number" + (number - 1 === page ? "-highlight" : "")}>
+                            <a onClick={() => { setPage(number - 1); handleSearch(number - 1) }}>{number}</a>
+                        </li>
+                    ))
+                    }
                 {pageNumbers.length > 0 &&
                     <div>
                         <li key="last" className="page-number">

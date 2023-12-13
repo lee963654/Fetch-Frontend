@@ -4,6 +4,7 @@ import SearchResults from "../SearchResults"
 import Pagination from "../Pagination"
 import { useHistory } from "react-router-dom"
 import { logoutThunk } from "../../store/session"
+import "./Search.css"
 
 
 export default function Search() {
@@ -18,6 +19,7 @@ export default function Search() {
     const [ageMax, setAgeMax] = useState("")
     const [sortBreed, setSortBreed] = useState("asc")
     const [pageNumbers, setPageNumbers] = useState([])
+    const [errors, setErrors] = useState("")
 
     const history = useHistory()
     const dispatch = useDispatch()
@@ -30,11 +32,11 @@ export default function Search() {
 
     const handleSearch = async (pageNum) => {
         console.log("INSIDE THE HANDLE SEARCH, THIS IS THE PAGE NUM", pageNum)
+        if (ageMax && ageMin && ageMax < ageMin) {
+            setErrors("Maximum age must be less than minimum age")
+            return
+        }
 
-        // const requestOptions = {
-        //     method: "GET",
-        //     credentials: "include",
-        // }
         const queryParams = []
         const selectedAgeMin = ageMin ? `ageMin=${ageMin}` : ""
         const selectedAgeMax = ageMax ? `ageMax=${ageMax}` : ""
@@ -119,6 +121,7 @@ export default function Search() {
 
     useEffect(() => {
         // const allBreeds = fetch("https://frontend-take-home-service.fetch.com/dogs/breeds", { credentials: "include" }).then((response) => response.json()).then((breeds) => setBreedList(breeds))
+        setErrors("")
         const gettingAllBreeds = async () => {
             const allBreeds = await fetch("https://frontend-take-home-service.fetch.com/dogs/breeds", { credentials: "include" })
             console.log("IN THE USEEFFECT FOR ALL BREEDS", allBreeds)
@@ -131,13 +134,14 @@ export default function Search() {
             }
         }
         gettingAllBreeds()
-    }, [searchResults, totalResults])
+    }, [searchResults, totalResults, ageMax, ageMin])
 
     return (
-        <div>
-            <div>
+        <div className="search-container">
+            {errors && <span className="errors">{errors}</span>}
+            <div className="search-filter-container">
                 <label>
-                    Dog Breeds
+                    <span>Dog Breeds</span>
                     <select value={breed} onChange={(e) => setBreed(e.target.value)}>
                         <option key="not option" value="">
                             All Breeds
@@ -150,31 +154,38 @@ export default function Search() {
                     </select>
                 </label>
                 <label>
-                    Zip Code
-                    <input
-                        type="text"
-                        value={zipCode}
-                        onChange={(e) => setZipCode(e.target.value)}
-                    />
-                </label>
-                <label>
-                    Minimum Age
+                    <span>Minimum Age</span>
                     <input
                         type="number"
                         value={ageMin}
                         onChange={(e) => setAgeMin(e.target.value)}
+                        min={0}
+                        max={20}
                     />
                 </label>
                 <label>
-                    Maximum Age
+                    <span>Maximum Age</span>
                     <input
                         type="number"
                         value={ageMax}
                         onChange={(e) => setAgeMax(e.target.value)}
+                        min={0}
+                        max={20}
                     />
                 </label>
                 <label>
-                    Number of Results
+                    <span>Sort By</span>
+                    <select value={sortBreed} onChange={(e) => setSortBreed(e.target.value)}>
+                        <option key="asc" value="asc">
+                            Asc
+                        </option>
+                        <option key="desc" value="desc">
+                            Desc
+                        </option>
+                    </select>
+                </label>
+                <label>
+                    <span>Results Per Page</span>
                     <select value={resultsPerPage} onChange={(e) => setResultsPerPage(e.target.value)}>
                         <option key="25" value={25}>
                             25
@@ -187,11 +198,15 @@ export default function Search() {
                         </option>
                     </select>
                 </label>
-                <button onClick={() => handleSearch(0)}>Search</button>
-                <button disabled={totalResults > 100 || totalResults === 0} onClick={handleMatch}>Match!</button>
+
+                <div className="filter-buttons">
+                    <button onClick={() => handleSearch(0)}>Search</button>
+                    <button disabled={totalResults > 100 || totalResults === 0} onClick={handleMatch}>Match!</button>
+
+                </div>
             </div>
             <div>
-                {totalResults > 0 && <p>Found {totalResults} Dogs!</p>}
+                {totalResults > 0 && <p className="num-results">Found {totalResults} Dogs!</p>}
                 <SearchResults results={searchResults} />
             </div>
             <div>

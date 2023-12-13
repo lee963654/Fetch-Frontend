@@ -1,0 +1,22 @@
+.dog-img-container {
+    margin: 5px 5px 0px 5px;
+}
+
+.dog-img-container > img {
+    width: 100px;
+    height: 100px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.dog-img-container > img:hover {
+    box-shadow: 5px 5px 5px rgb(109, 102, 3);
+}
+
+.search-results-container {
+
+    display: flex;
+    /* flex-direction: column; */
+    width: 35rem;
+    flex-wrap: wrap;
+}

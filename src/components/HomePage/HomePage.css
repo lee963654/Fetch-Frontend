@@ -1,0 +1,22 @@
+header {
+    display: flex;
+    align-items: center;
+    border: 1px black solid;
+    justify-content: space-between;
+    margin: 1rem;
+    width: 100%;
+}
+
+.home-page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.home-page-container > section {
+    margin: 1rem;
+    width: 30rem;
+    display: flex;
+    border: 1px black solid;
+
+}

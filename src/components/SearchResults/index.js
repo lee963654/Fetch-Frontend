@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
+import "./SearchResults.css"
 
 export default function SearchResults({ results }) {
 const history = useHistory()
@@ -7,14 +8,10 @@ const history = useHistory()
 
 
     return (
-        <div>
-            Test search results
+        <div className="search-results-container">
             {results.map(dog => (
-                <div onClick={() => history.push(`/dogs/${dog.id}`)}>
-                    <p>
-                        {dog.name}
-                    </p>
-                    <img src={dog.img} style={{width: 275, height: 275}} alt="dog info"></img>
+                <div className="dog-img-container" onClick={() => history.push(`/dogs/${dog.id}`)}>
+                    <img src={dog.img} alt="dog info"></img>
                 </div>
             ))}
         </div>
