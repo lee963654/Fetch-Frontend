@@ -93,10 +93,11 @@ export default function Pagination({ resultsPerPage, totalResults, handleSearch 
                 {pageNumbers.length > 0 &&
                     <div>
                         <li key="first" className="page-number">
-                            <a onClick={() => { setPage(0); handleSearch(0) }}>First Page</a>
+                            <a onClick={() => { setPage(0); handleSearch(0) }}>First</a>
                         </li>
-                        <li key="next" className="page-number">
-                            <a onClick={() => handleSearch(nextPage())}>Next</a>
+
+                        <li key="previous" className="page-number">
+                            <a onClick={() => handleSearch(prevPage())}>Previous</a>
                         </li>
                     </div>
                 }
@@ -105,25 +106,27 @@ export default function Pagination({ resultsPerPage, totalResults, handleSearch 
                         <a onClick={() => { setPage(number - 1); handleSearch(number - 1) }}>{number}</a>
                     </li>
                 ))} */}
-                {pageNumbers && pageNumbers.length < 12 ? pageNumbers.map(number => (
-                    <li key={number} className={"page-number" + (number - 1 === page ? "-highlight" : "")}>
-                        <a onClick={() => { setPage(number - 1); handleSearch(number - 1) }}>{number}</a>
-                    </li>
-                ))
-                    :
-                    pageNumbers.slice(currentPageStart, currentPageEnd).map(number => (
+                <div className="page-num-block">
+                    {pageNumbers && pageNumbers.length < 12 ? pageNumbers.map(number => (
                         <li key={number} className={"page-number" + (number - 1 === page ? "-highlight" : "")}>
                             <a onClick={() => { setPage(number - 1); handleSearch(number - 1) }}>{number}</a>
                         </li>
                     ))
+                        :
+                        pageNumbers.slice(currentPageStart, currentPageEnd).map(number => (
+                            <li key={number} className={"page-number" + (number - 1 === page ? "-highlight" : "")}>
+                                <a onClick={() => { setPage(number - 1); handleSearch(number - 1) }}>{number}</a>
+                            </li>
+                        ))
                     }
+                </div>
                 {pageNumbers.length > 0 &&
                     <div>
                         <li key="last" className="page-number">
-                            <a onClick={() => { setPage(pageNumbers.length - 1); handleSearch(pageNumbers.length - 1) }}>Last Page</a>
+                            <a onClick={() => { setPage(pageNumbers.length - 1); handleSearch(pageNumbers.length - 1) }}>Last</a>
                         </li>
-                        <li key="previous" className="page-number">
-                            <a onClick={() => handleSearch(prevPage())}>Previous</a>
+                        <li key="next" className="page-number">
+                            <a onClick={() => handleSearch(nextPage())}>Next</a>
                         </li>
                     </div>
                 }

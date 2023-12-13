@@ -10,9 +10,9 @@ import "./Search.css"
 export default function Search() {
     const [breed, setBreed] = useState("")
     const [breedList, setBreedList] = useState([])
-    const [zipCode, setZipCode] = useState("")
+
     const [searchResults, setSearchResults] = useState([])
-    const [loading, setLoading] = useState(false)
+
     const [resultsPerPage, setResultsPerPage] = useState(25)
     const [totalResults, setTotalResults] = useState(0)
     const [ageMin, setAgeMin] = useState("")

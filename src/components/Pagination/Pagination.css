@@ -1,4 +1,6 @@
-
+.page-num-block {
+    display: flex;
+}
 
 .page-number-container {
     list-style-type: none;
