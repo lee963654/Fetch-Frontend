@@ -18,8 +18,10 @@ export default function Search() {
     const [ageMin, setAgeMin] = useState("")
     const [ageMax, setAgeMax] = useState("")
     const [sortBreed, setSortBreed] = useState("asc")
-    const [pageNumbers, setPageNumbers] = useState([])
     const [errors, setErrors] = useState("")
+    const [currPage, setCurrPage] = useState(0)
+    const [hasSubmitted, setHasSubmitted] = useState(false)
+
 
     const history = useHistory()
     const dispatch = useDispatch()
@@ -29,9 +31,13 @@ export default function Search() {
         credentials: "include",
     }
 
-
-    const handleSearch = async (pageNum) => {
+    console.log("TESTING THE HAS SUBMITTED", hasSubmitted)
+    const handleSearch = async (pageNum, hasSubmit) => {
         console.log("INSIDE THE HANDLE SEARCH, THIS IS THE PAGE NUM", pageNum)
+        if (hasSubmit === true) {
+            setHasSubmitted(true)
+        }
+
         if (ageMax && ageMin && ageMax < ageMin) {
             setErrors("Maximum age must be less than minimum age")
             return
@@ -71,6 +77,7 @@ export default function Search() {
         const dogInfoResults = await responseDogInfo.json()
 
         setSearchResults(dogInfoResults)
+
     }
 
     const handleMatch = async () => {
@@ -200,7 +207,7 @@ export default function Search() {
                 </label>
 
                 <div className="filter-buttons">
-                    <button onClick={() => handleSearch(0)}>Search</button>
+                    <button onClick={() => handleSearch(0, true)}>Search</button>
                     <button disabled={totalResults > 100 || totalResults === 0} onClick={handleMatch}>Match!</button>
 
                 </div>
@@ -210,7 +217,7 @@ export default function Search() {
                 <SearchResults results={searchResults} />
             </div>
             <div>
-                <Pagination resultsPerPage={resultsPerPage} totalResults={totalResults} handleSearch={handleSearch} />
+                <Pagination resultsPerPage={resultsPerPage} totalResults={totalResults} handleSearch={handleSearch} hasSubmitted={hasSubmitted} setHasSubmitted={setHasSubmitted} />
             </div>
         </div>
     )

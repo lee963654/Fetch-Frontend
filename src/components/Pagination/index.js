@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react"
 import "./Pagination.css"
 
 
-export default function Pagination({ resultsPerPage, totalResults, handleSearch }) {
+export default function Pagination({ resultsPerPage, totalResults, handleSearch, hasSubmitted, setHasSubmitted }) {
     const [page, setPage] = useState(0)
     const [currentPageStart, setCurrentPageStart] = useState(0)
     const [currentPageEnd, setCurrentPageEnd] = useState(11)
@@ -42,15 +42,18 @@ export default function Pagination({ resultsPerPage, totalResults, handleSearch 
         return prevPageCount
     }
     console.log("THIS IS THE CURENT PAGE IN THE PAGINATION", page)
+    console.log("THIS IS THE HAS SUBMITTED IN THE PAGINATION PAGE", hasSubmitted)
+
 
     //testing
     useEffect(() => {
         console.log("USEEFFECT TEST")
+
         const pageBlockStart = () => {
-            console.log("TESTING THE PAGE BLOCK START FGUNCTION")
+            // console.log("TESTING THE PAGE BLOCK START FGUNCTION")
             const lastPage = pageNumbers[pageNumbers.length - 1]
-            console.log("THIS IS THE LAST PAGE VARIABLE", lastPage)
-            console.log("THIS IS THE PAGE VARIABLE", page)
+            // console.log("THIS IS THE LAST PAGE VARIABLE", lastPage)
+            // console.log("THIS IS THE PAGE VARIABLE", page)
             if (page < 10 || page === 0) {
                 setCurrentPageStart(0)
                 setCurrentPageEnd(11)
@@ -61,11 +64,7 @@ export default function Pagination({ resultsPerPage, totalResults, handleSearch 
                 setCurrentPageEnd(page + 11)
                 return
             }
-            // if (page % 10 === 0 && page <= currentPageStart) {
-            //     setCurrentPageStart(page - 1)
-            //     setCurrentPageEnd(page + 11)
-            //     return
-            // }
+
             if (page === currentPageStart) {
                 setCurrentPageStart(page - 10)
                 setCurrentPageEnd(end => end - 10)
@@ -73,7 +72,6 @@ export default function Pagination({ resultsPerPage, totalResults, handleSearch 
             }
             if (page + 1 === lastPage) {
                 const newStartNum = ((Math.floor(page / 10)) * 10) - 1
-                console.log("INSIDE THE LAST PAGE IF BLOCK")
                 setCurrentPageStart(newStartNum)
                 setCurrentPageEnd(newStartNum + 12)
                 return
@@ -81,10 +79,20 @@ export default function Pagination({ resultsPerPage, totalResults, handleSearch 
         }
         pageBlockStart()
 
-    }, [page])
-    console.log("THIS IS THE INDEX OF THE CURRENT PAGE IN THE ARRAY", pageNumbers.slice(currentPageStart, currentPageEnd).indexOf(page))
-    console.log("THE CURR PAGE START AND END", currentPageStart, currentPageEnd)
-    console.log("WE ARE SLICING THE PAGE NUMBERS BLOCK", pageNumbers.slice(currentPageStart, currentPageEnd))
+        const hasSubmittedFunc = (hasSubmitted) => {
+            if (hasSubmitted === true) {
+                setHasSubmitted(false)
+                setPage(0)
+                return
+            }
+        }
+        hasSubmittedFunc(hasSubmitted)
+        console.log("THIS IS THE HAS SUBMITTED after the function IN THE USEEFFECT", hasSubmitted)
+
+    }, [page, hasSubmitted])
+    // console.log("THIS IS THE INDEX OF THE CURRENT PAGE IN THE ARRAY", pageNumbers.slice(currentPageStart, currentPageEnd).indexOf(page))
+    // console.log("THE CURR PAGE START AND END", currentPageStart, currentPageEnd)
+    // console.log("WE ARE SLICING THE PAGE NUMBERS BLOCK", pageNumbers.slice(currentPageStart, currentPageEnd))
 
     return (
 
