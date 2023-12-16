@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { useHistory } from "react-router-dom"
 
@@ -17,13 +17,13 @@ export default function HomePage() {
         }
         const response = await fetch("https://frontend-take-home-service.fetch.com/auth/logout", requestOptions)
         if (response.ok) {
-
             history.push("/login")
         } else {
-
             history.push("/login")
         }
     }
+
+
 
 
 

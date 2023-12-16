@@ -25,7 +25,7 @@ export default function DogPage() {
             }
             const response = await fetch(`https://frontend-take-home-service.fetch.com/dogs`, matchOptions)
             if (!response.ok) {
-                history.push("/")
+                history.push("/login")
             }
             const matchedDog = await response.json()
             const matchedDogObj = matchedDog[0]
@@ -44,7 +44,7 @@ export default function DogPage() {
 
             const locationObj = matchedLocation[0]
             if (!locationRes.ok) {
-                history.push("/")
+                history.push("/login")
             }
 
             const newDogObj = {

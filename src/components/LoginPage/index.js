@@ -10,6 +10,23 @@ export default function LoginPage() {
     const [email, setEmail] = useState("");
     const [error, setError] = useState("")
 
+    // const logIn = async (userObj) => {
+    //     const requestOptions = {
+    //         method: "POST",
+    //         headers: {
+    //             "Content-Type": "application/json"
+    //         },
+    //         body: JSON.stringify(userObj),
+    //         credentials: "include",
+    //     }
+    //     const response = await fetch("https://frontend-take-home-service.fetch.com/auth/login", requestOptions)
+    //     if (response.ok) {
+    //         return true
+    //     } else {
+    //         return console.log("FALSE")
+    //     }
+    // }
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         const user = { name: name, email: email }
@@ -22,11 +39,14 @@ export default function LoginPage() {
             credentials: "include",
         }
         const response = await fetch("https://frontend-take-home-service.fetch.com/auth/login", requestOptions)
+        console.log("THIS IS THE RESPONSE FROM LOGIN", response)
+
         if (response.ok) {
             history.push("/")
         } else {
             setError("Please enter a valid email address")
         }
+
     }
 
     useEffect(() => {

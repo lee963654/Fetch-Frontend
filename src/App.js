@@ -1,26 +1,21 @@
-import React, { useEffect, useState } from "react"
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect } from "react"
+
 import { Route, Switch } from "react-router-dom"
 import LoginPage from "./components/LoginPage";
 import HomePage from "./components/HomePage";
-import { restoreUser } from "./store/session";
+
 import DogPage from "./components/DogPage";
 
 
 
 function App() {
-  const dispatch = useDispatch()
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const sessionUser = useSelector(((state) => state.session.user))
 
-  useEffect(() => {
-    dispatch(restoreUser()).then(() => setIsLoggedIn(true))
-
-  }, [dispatch])
+useEffect(() => {
+  console.log("IN THE APP")
+}, [])
 
   return (
     <div>
-      {isLoggedIn && (
       <Switch>
         <Route exact path = "/login">
           <LoginPage />
@@ -32,9 +27,6 @@ function App() {
           <DogPage />
         </Route>
       </Switch>
-      )
-
-      }
     </div>
   );
 }
