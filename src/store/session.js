@@ -23,7 +23,7 @@ export const logoutThunk = () => async (dispatch) => {
     dispatch(removeUser())
 }
 
-export const restoreUser = (user) => async (dispatch) => {
+export const restoreUserThunk = (user) => async (dispatch) => {
     dispatch(setUser(user))
 }
 

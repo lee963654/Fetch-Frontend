@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { loginThunk } from "../../store/session";
 import "./LoginPage.css"
 
 
 export default function LoginPage() {
     const history = useHistory()
+    const dispatch = useDispatch()
+    const sessionUser = useSelector(state => state)
+
     const [name, setName] = useState("")
     const [email, setEmail] = useState("");
     const [error, setError] = useState("")
@@ -42,12 +46,18 @@ export default function LoginPage() {
         console.log("THIS IS THE RESPONSE FROM LOGIN", response)
 
         if (response.ok) {
+            dispatch(loginThunk(user))
+            sessionStorage.setItem("user", JSON.stringify(user))
+            const test = JSON.parse(sessionStorage.getItem("user"))
+            console.log("THIS IS GETTING THE session STORAGE inloginpage", test)
             history.push("/")
         } else {
             setError("Please enter a valid email address")
         }
-
     }
+
+    console.log("IN THE LOGIN PAGE - CHECKING SESSION STORAGE", JSON.parse(sessionStorage.getItem("user")))
+    console.log("IN THE LOGIN PAGE - CHECKING SESSION USER", sessionUser)
 
     useEffect(() => {
         setError("")

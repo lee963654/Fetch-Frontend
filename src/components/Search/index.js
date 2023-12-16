@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react"
-
+import { useDispatch } from "react-redux"
 import SearchResults from "../SearchResults"
 import Pagination from "../Pagination"
 import { useHistory } from "react-router-dom"
+import { logoutThunk } from "../../store/session"
 
 import "./Search.css"
 
@@ -23,7 +24,7 @@ export default function Search() {
     const [hasSubmitted, setHasSubmitted] = useState(false)
     const [resultsToPag, setResultsToPag] = useState()
 
-
+    const dispatch = useDispatch()
     const history = useHistory()
 
     const requestOptions = {
@@ -128,7 +129,8 @@ export default function Search() {
                 const allBreedList = await allBreeds.json()
                 setBreedList(allBreedList)
             } else {
-
+                sessionStorage.clear()
+                dispatch(logoutThunk())
                 history.push("/login")
             }
         }
@@ -202,11 +204,11 @@ export default function Search() {
                 </label>
                 {errors && <span className="errors">{errors}</span>}
             </div>
-                <div className="filter-buttons">
-                    <button onClick={() => handleSearch(0, true)}>Search</button>
-                    <button disabled={totalResults > 100 || totalResults === 0} onClick={handleMatch}>Match!</button>
+            <div className="filter-buttons">
+                <button onClick={() => handleSearch(0, true)}>Search</button>
+                <button disabled={totalResults > 100 || totalResults === 0} onClick={handleMatch}>Match!</button>
 
-                </div>
+            </div>
             <div>
                 {totalResults > 0 && <p className="num-results">Found {totalResults} Dogs!</p>}
                 <SearchResults results={searchResults} />
