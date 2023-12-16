@@ -100,11 +100,11 @@ export default function Pagination({ resultsPerPage, totalResults, handleSearch,
             <ul className="page-number-container">
                 {pageNumbers.length > 0 &&
                     <div>
-                        <li key="first" className="page-number">
+                        <li key="first" className="page-number-nav">
                             <a onClick={() => { setPage(0); handleSearch(0) }}>First</a>
                         </li>
 
-                        <li key="previous" className="page-number">
+                        <li key="previous" className="page-number-nav">
                             <a onClick={() => handleSearch(prevPage())}>Previous</a>
                         </li>
                     </div>
@@ -130,10 +130,10 @@ export default function Pagination({ resultsPerPage, totalResults, handleSearch,
                 </div>
                 {pageNumbers.length > 0 &&
                     <div>
-                        <li key="last" className="page-number">
+                        <li key="last" className="page-number-nav">
                             <a onClick={() => { setPage(pageNumbers.length - 1); handleSearch(pageNumbers.length - 1) }}>Last</a>
                         </li>
-                        <li key="next" className="page-number">
+                        <li key="next" className="page-number-nav">
                             <a onClick={() => handleSearch(nextPage())}>Next</a>
                         </li>
                     </div>

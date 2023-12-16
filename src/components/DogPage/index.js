@@ -66,11 +66,11 @@ export default function DogPage() {
         getMatchedDogInfo()
         console.log("THIS IS THE DOG", dog)
     }, [])
-    console.log("THIS IS THE DOG OUTSIDE THE USEEFFECT", dog)
+
 
     return (
         <div className="matched-dog-container">
-            <h1>Congradulations! You have matched with {dog.name}!</h1>
+            <h1>Congratulations! You have matched with {dog.name}!</h1>
             <div className="matched-dog-info">
                 <img src={dog.img} alt={dog.name}></img>
                 <p>Name: {dog.name}</p>

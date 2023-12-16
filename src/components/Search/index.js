@@ -19,21 +19,21 @@ export default function Search() {
     const [ageMax, setAgeMax] = useState("")
     const [sortBreed, setSortBreed] = useState("asc")
     const [errors, setErrors] = useState("")
-    const [currPage, setCurrPage] = useState(0)
+
     const [hasSubmitted, setHasSubmitted] = useState(false)
+    const [resultsToPag, setResultsToPag] = useState()
 
 
     const history = useHistory()
-    const dispatch = useDispatch()
 
     const requestOptions = {
         method: "GET",
         credentials: "include",
     }
 
-    console.log("TESTING THE HAS SUBMITTED", hasSubmitted)
+
     const handleSearch = async (pageNum, hasSubmit) => {
-        console.log("INSIDE THE HANDLE SEARCH, THIS IS THE PAGE NUM", pageNum)
+
         if (hasSubmit === true) {
             setHasSubmitted(true)
         }
@@ -43,6 +43,7 @@ export default function Search() {
             return
         }
 
+        setResultsToPag(resultsPerPage)
         const queryParams = []
         const selectedAgeMin = ageMin ? `ageMin=${ageMin}` : ""
         const selectedAgeMax = ageMax ? `ageMax=${ageMax}` : ""
@@ -81,12 +82,7 @@ export default function Search() {
     }
 
     const handleMatch = async () => {
-        // let dogArray = []
 
-        // const requestOptions = {
-        //     method: "GET",
-        //     credentials: "include",
-        // }
         const queryParams = []
         const selectedAgeMin = ageMin ? `ageMin=${ageMin}` : ""
         const selectedAgeMax = ageMax ? `ageMax=${ageMax}` : ""
@@ -101,13 +97,9 @@ export default function Search() {
 
         const selectedQueryParams = queryParams.join("&")
         const response = await fetch(`https://frontend-take-home-service.fetch.com/dogs/search?${selectedQueryParams}`, requestOptions)
-
+        if (!response.ok) history.push("/")
         const dogMatchResults = await response.json()
 
-
-        // const currentTotalMatches = dogMatchResults.total
-        // dogArray = [...dogArray, ...dogMatchResults.resultIds]
-        // let tempURL = await fetch(`https://frontend-take-home-service.fetch.com${dogMatchResults.next}`, requestOptions)
 
 
         const matchOptions = {
@@ -127,25 +119,28 @@ export default function Search() {
     }
 
     useEffect(() => {
-        // const allBreeds = fetch("https://frontend-take-home-service.fetch.com/dogs/breeds", { credentials: "include" }).then((response) => response.json()).then((breeds) => setBreedList(breeds))
+
         setErrors("")
         const gettingAllBreeds = async () => {
             const allBreeds = await fetch("https://frontend-take-home-service.fetch.com/dogs/breeds", { credentials: "include" })
-            console.log("IN THE USEEFFECT FOR ALL BREEDS", allBreeds)
+
             if (allBreeds.ok) {
-                const breedRes = await allBreeds.json()
-                setBreedList(breedRes)
+                const allBreedList = await allBreeds.json()
+                setBreedList(allBreedList)
             } else {
-                dispatch(logoutThunk())
+
                 history.push("/login")
             }
         }
         gettingAllBreeds()
     }, [searchResults, totalResults, ageMax, ageMin])
 
+
+
+
     return (
         <div className="search-container">
-            {errors && <span className="errors">{errors}</span>}
+
             <div className="search-filter-container">
                 <label>
                     <span>Dog Breeds</span>
@@ -205,19 +200,19 @@ export default function Search() {
                         </option>
                     </select>
                 </label>
-
+                {errors && <span className="errors">{errors}</span>}
+            </div>
                 <div className="filter-buttons">
                     <button onClick={() => handleSearch(0, true)}>Search</button>
                     <button disabled={totalResults > 100 || totalResults === 0} onClick={handleMatch}>Match!</button>
 
                 </div>
-            </div>
             <div>
                 {totalResults > 0 && <p className="num-results">Found {totalResults} Dogs!</p>}
                 <SearchResults results={searchResults} />
             </div>
             <div>
-                <Pagination resultsPerPage={resultsPerPage} totalResults={totalResults} handleSearch={handleSearch} hasSubmitted={hasSubmitted} setHasSubmitted={setHasSubmitted} />
+                <Pagination resultsPerPage={resultsToPag} totalResults={totalResults} handleSearch={handleSearch} hasSubmitted={hasSubmitted} setHasSubmitted={setHasSubmitted} />
             </div>
         </div>
     )

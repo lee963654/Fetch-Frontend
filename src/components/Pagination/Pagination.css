@@ -1,12 +1,44 @@
 .page-num-block {
     display: flex;
+    width: 28rem;
+    justify-content: center;
+}
+
+.page-number {
+    height: 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px;
 }
 
 .page-number-container {
     list-style-type: none;
     display: flex;
+    width: 40rem;
+    justify-content: space-between;
+    padding: 0;
 }
 
 .page-number-highlight {
     background-color: rgba(204, 204, 29, 0.589);
+    height: 20px;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 10px;
+
+}
+
+.page-number-nav {
+    height: 20px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 5px;
+    border: solid black 1px;
+    border-radius: 5px;
+    justify-content: center;
+    background-color: rgb(252, 165, 3);
 }

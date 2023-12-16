@@ -1,6 +1,6 @@
 /* TODO Add site wide styles */
 * {
-    font-family: "Fira Sans", sans-serif;
+    font-family: "Helvetica", sans-serif;
 }
 
 button {
@@ -13,8 +13,9 @@ button {
 
 
 html {
-    background-color: rgb(238, 204, 11);
-    background-image: linear-gradient(rgb(238, 204, 11), rgb(247, 246, 246));
+    /* background-color: rgb(238, 204, 11); */
+    /* background-image: linear-gradient(rgb(238, 204, 11), rgb(247, 246, 246)); */
+    background-color: antiquewhite;
     height: 100%;
 }
 

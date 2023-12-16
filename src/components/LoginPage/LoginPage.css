@@ -26,6 +26,10 @@
     height: 50rem;
 }
 
+.login-page-container > h1 {
+    font-size: 3rem;
+}
+
 .login-page-container > section {
     width: 25rem;
     margin-bottom: 1rem;

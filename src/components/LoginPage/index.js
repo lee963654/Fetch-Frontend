@@ -36,6 +36,7 @@ export default function LoginPage() {
 
     return (
         <div className="login-page-container">
+            <h1>Fetch</h1>
             <section>
                 <p>
                     Welcome to Fetch! We love dogs, and hope you do too! We are here to help you bring a lucky dog home. Please enter your name and email to get started.
@@ -67,6 +68,7 @@ export default function LoginPage() {
                 </div>
                 <button type="submit">Log In</button>
             </form>
+
         </div>
     );
 }
