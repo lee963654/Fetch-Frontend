@@ -8,21 +8,6 @@ export default function Pagination({ resultsPerPage, totalResults, handleSearch,
     const [currentPageEnd, setCurrentPageEnd] = useState(11)
 
 
-    // const pageBlockStart = page % 10 === 0 ? page : 0
-    // const pageBlockEnd = pageBlockStart === page ? page + 10 : 0
-    // const pageBlockStart = () => {
-    //     if (page % 10 === 0) {
-    //         currPageStart = page
-    //     }
-    //     console.log("THE CURR PAGE START", currPageStart)
-
-    // }
-    // console.log("TESTING PAGEBLOCKSTART", pageBlockStart())
-
-    //Testing
-    // const [pageNumbers, setPageNumbers] = useState([])
-
-
     const pageNumbers = []
     for (let i = 1; i <= Math.ceil(totalResults / resultsPerPage); i++) {
         pageNumbers.push(i)
@@ -41,19 +26,16 @@ export default function Pagination({ resultsPerPage, totalResults, handleSearch,
         setPage(prevPageCount)
         return prevPageCount
     }
-    console.log("THIS IS THE CURENT PAGE IN THE PAGINATION", page)
-    console.log("THIS IS THE HAS SUBMITTED IN THE PAGINATION PAGE", hasSubmitted)
 
 
-    //testing
+
+
     useEffect(() => {
-        console.log("USEEFFECT TEST")
 
         const pageBlockStart = () => {
-            // console.log("TESTING THE PAGE BLOCK START FGUNCTION")
+
             const lastPage = pageNumbers[pageNumbers.length - 1]
-            // console.log("THIS IS THE LAST PAGE VARIABLE", lastPage)
-            // console.log("THIS IS THE PAGE VARIABLE", page)
+
             if (page < 10 || page === 0) {
                 setCurrentPageStart(0)
                 setCurrentPageEnd(11)
@@ -87,12 +69,10 @@ export default function Pagination({ resultsPerPage, totalResults, handleSearch,
             }
         }
         hasSubmittedFunc(hasSubmitted)
-        console.log("THIS IS THE HAS SUBMITTED after the function IN THE USEEFFECT", hasSubmitted)
+
 
     }, [page, hasSubmitted])
-    // console.log("THIS IS THE INDEX OF THE CURRENT PAGE IN THE ARRAY", pageNumbers.slice(currentPageStart, currentPageEnd).indexOf(page))
-    // console.log("THE CURR PAGE START AND END", currentPageStart, currentPageEnd)
-    // console.log("WE ARE SLICING THE PAGE NUMBERS BLOCK", pageNumbers.slice(currentPageStart, currentPageEnd))
+
 
     return (
 
@@ -109,11 +89,7 @@ export default function Pagination({ resultsPerPage, totalResults, handleSearch,
                         </li>
                     </div>
                 }
-                {/* {pageNumbers && pageNumbers.map(number => (
-                    <li key={number} className={"page-number" + (number - 1 === page ? "-highlight" : "")}>
-                        <a onClick={() => { setPage(number - 1); handleSearch(number - 1) }}>{number}</a>
-                    </li>
-                ))} */}
+
                 <div className="page-num-block">
                     {pageNumbers && pageNumbers.length < 12 ? pageNumbers.map(number => (
                         <li key={number} className={"page-number" + (number - 1 === page ? "-highlight" : "")}>

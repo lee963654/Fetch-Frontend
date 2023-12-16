@@ -12,8 +12,6 @@ export default function DogPage() {
     const [dog, setDog] = useState({})
 
 
-    // const { age, breed, id, img, name, zip_code } = dog
-    // const {email} = sessionUser
 
     useEffect(() => {
         const getMatchedDogInfo = async () => {
@@ -31,7 +29,7 @@ export default function DogPage() {
             }
             const matchedDog = await response.json()
             const matchedDogObj = matchedDog[0]
-            console.log("THIS IS THE DOG INFO IN THE DOG PAGE", matchedDog)
+
             const locationOptions = {
                 method: "POST",
                 headers: {
@@ -41,9 +39,9 @@ export default function DogPage() {
                 credentials: "include",
             }
             const locationRes = await fetch(`https://frontend-take-home-service.fetch.com/locations`, locationOptions)
-            console.log("THIS IS THE LOCATION RESPONSE", locationRes)
+
             const matchedLocation = await locationRes.json()
-            console.log("THIS IS THE LOCATION INFO", matchedLocation)
+
             const locationObj = matchedLocation[0]
             if (!locationRes.ok) {
                 history.push("/")
@@ -60,11 +58,11 @@ export default function DogPage() {
                 state: locationObj.state,
                 zip_code: locationObj.zip_code
             }
-            console.log("THIS IS THE LOCATION", locationRes)
+
             setDog(newDogObj)
         }
         getMatchedDogInfo()
-        console.log("THIS IS THE DOG", dog)
+
     }, [])
 
 

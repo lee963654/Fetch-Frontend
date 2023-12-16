@@ -8,7 +8,6 @@ import "./HomePage.css"
 export default function HomePage() {
     const history = useHistory()
 
-    const sessionUser = useSelector((state) => state.session.user)
 
     const handleLogout = async (e) => {
         e.preventDefault()
