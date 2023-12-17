@@ -24,10 +24,11 @@ function App() {
 
 
   useEffect(() => {
+    const favoritesArr = gettingFavorites ? [...gettingFavorites] : []
     const restoreUserObj = {
-      name: gettingUser.name,
-      email: gettingUser.email,
-      favorites: [...gettingFavorites]
+      name: gettingUser?.name,
+      email: gettingUser?.email,
+      favorites: favoritesArr
     }
     dispatch(restoreUserThunk(restoreUserObj)).then(() => setIsLoggedIn(true))
 

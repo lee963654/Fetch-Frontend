@@ -17,24 +17,20 @@ export default function DogPage(dogId) {
     const [dog, setDog] = useState({})
 
     const inFavorites = sessionUser.favorites.includes(dogId.dogId)
-    console.log("CHECKING IF THE DOG ALREADY IS IN THE FAV", inFavorites)
+
     const handleAdd = async () => {
-        // const favoriteDogsArr = [...sessionUser.favorites]
-        // console.log("THE FAVORITE DOG ARRAY IN THE DOG PAGE", favoriteDogsArr)
+
         sessionStorage.setItem("favorites", JSON.stringify([...sessionUser.favorites, dogId.dogId]))
         return dispatch(addToFavorite(dogId.dogId)).then(closeModal)
     }
-    console.log("THE SESSION USER IN THE DOG PAGE", sessionUser)
-    console.log("THE dog id in the DOG PAGE", dogId)
+
 
     const handleRemove = async () => {
         const favoritesArr = sessionUser.favorites
-        console.log("TESTING THE FAVORITES ARR BEFORE SPLICE", favoritesArr)
+
         for (let i = 0; i < favoritesArr.length; i++) {
             if (dogId.dogId === favoritesArr[i]) {
                 favoritesArr.splice(i, 1)
-                console.log("TESTING THE FAVORITES ARR AFTER SPLICE", favoritesArr)
-
             }
         }
         sessionStorage.setItem("favorites", JSON.stringify([...favoritesArr]))

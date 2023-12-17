@@ -82,6 +82,8 @@ export default function Search() {
 
     }
 
+    console.log("THIS IS THE SEARCH RESULTS IN THE SEARCH", searchResults)
+
     const handleMatch = async () => {
 
         const queryParams = []
