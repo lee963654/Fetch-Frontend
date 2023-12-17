@@ -6,10 +6,10 @@ import Search from "../Search"
 import "./HomePage.css"
 
 export default function HomePage() {
-    // const history = useHistory()
-    // const dispatch = useDispatch()
-    // const sessionUser = useSelector(state => state)
-    // console.log("THIS IS THE SESSION USER IN THE HOME PAGE", sessionUser)
+    const history = useHistory()
+    const dispatch = useDispatch()
+    const sessionUser = useSelector(state => state?.session?.user)
+    console.log("THIS IS THE SESSION USER IN THE HOME PAGE", sessionUser)
 
     // const handleLogout = async (e) => {
     //     e.preventDefault()
@@ -30,7 +30,12 @@ export default function HomePage() {
     // }
     // const test = JSON.parse(sessionStorage.getItem("user"))
     // console.log("THIS IS GETTING THE session STORAGE in homepage", test)
-
+    useEffect(() => {
+        if (!sessionUser) {
+            history.push("/login")
+        }
+        console.log("CHECKING FOR A SESSION USER IN THE HOMEPAGE", sessionUser)
+    }, [sessionUser])
 
 
 

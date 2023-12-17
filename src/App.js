@@ -6,6 +6,7 @@ import HomePage from "./components/HomePage";
 import { restoreUserThunk } from "./store/session";
 import DogPage from "./components/DogPage";
 import HeaderNav from "./components/HeaderNav";
+import FavoritesPage from "./components/FavoritesPage";
 
 
 
@@ -15,11 +16,20 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false)
 
   const gettingUser = JSON.parse(sessionStorage.getItem("user"))
-  console.log("THIS IS GETTING THE session STORAGE in THE APP PAGE", gettingUser)
+
+  const gettingFavorites = JSON.parse(sessionStorage.getItem("favorites"))
+  console.log("THIS IS GETTING THE session STORAGE for the user in THE APP PAGE", gettingUser)
+  console.log("THIS IS GETTING THE SESSION STORAGE FOR FAVORITES IN THE APP PAGE", gettingFavorites)
   console.log("CHECKING THE IS LOGGED IN STATE", isLoggedIn)
 
+
   useEffect(() => {
-    dispatch(restoreUserThunk(gettingUser)).then(() => setIsLoggedIn(true))
+    const restoreUserObj = {
+      name: gettingUser.name,
+      email: gettingUser.email,
+      favorites: [...gettingFavorites]
+    }
+    dispatch(restoreUserThunk(restoreUserObj)).then(() => setIsLoggedIn(true))
 
   }, [dispatch])
 
@@ -35,6 +45,9 @@ function App() {
           </Route>
           <Route exact path="/">
             <HomePage />
+          </Route>
+          <Route exact path="/favorites">
+            <FavoritesPage />
           </Route>
           <Route exact path="/dogs/:dogId">
             <DogPage />

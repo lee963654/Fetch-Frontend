@@ -30,7 +30,7 @@ export default function HeaderNav() {
 
     return (
         <header>
-            <h1>Fetch</h1>
+            <h1 onClick={() => history.push("/")}>Fetch</h1>
             {/* {sessionUser &&
                 <nav>
                     <button>

@@ -33,7 +33,7 @@ export default function LoginPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const user = { name: name, email: email }
+        const user = { name: name, email: email, favorites: [] }
         const requestOptions = {
             method: "POST",
             headers: {
@@ -43,21 +43,20 @@ export default function LoginPage() {
             credentials: "include",
         }
         const response = await fetch("https://frontend-take-home-service.fetch.com/auth/login", requestOptions)
-        console.log("THIS IS THE RESPONSE FROM LOGIN", response)
+
 
         if (response.ok) {
             dispatch(loginThunk(user))
             sessionStorage.setItem("user", JSON.stringify(user))
             const test = JSON.parse(sessionStorage.getItem("user"))
-            console.log("THIS IS GETTING THE session STORAGE inloginpage", test)
+            console.log("THIS IS THE SESSION STORAGE IN THE LOGIN", test)
             history.push("/")
         } else {
             setError("Please enter a valid email address")
         }
     }
 
-    console.log("IN THE LOGIN PAGE - CHECKING SESSION STORAGE", JSON.parse(sessionStorage.getItem("user")))
-    console.log("IN THE LOGIN PAGE - CHECKING SESSION USER", sessionUser)
+
 
     useEffect(() => {
         setError("")

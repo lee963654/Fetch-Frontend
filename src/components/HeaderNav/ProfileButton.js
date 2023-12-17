@@ -16,6 +16,8 @@ export default function ProfileButton({ user }) {
         setShowMenu(true);
     };
 
+    const closeMenu = () => setShowMenu(false)
+
     useEffect(() => {
         if (!showMenu) return;
 
@@ -62,7 +64,7 @@ export default function ProfileButton({ user }) {
                 {/* <li>
                     <button onClick={handleLogout}>Log Out</button>
                 </li> */}
-                <li>
+                <li onClick={() => {closeMenu(); history.push("/favorites")}}>
                     Favorites
                 </li>
                 <li onClick={handleLogout}>

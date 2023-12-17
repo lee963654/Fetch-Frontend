@@ -1,17 +1,45 @@
 import React, { useEffect, useState } from "react"
 import { useParams, useHistory } from "react-router-dom"
-import { useSelector } from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { addToFavorite, removeFavoriteThunk } from "../../store/session"
+import { useModal } from "../../context/Modal"
+
 import "./DogPage.css"
 
 
-export default function DogPage() {
-    const { dogId } = useParams()
+export default function DogPage(dogId) {
+    // const { dogId } = useParams()
     const history = useHistory()
+    const dispatch = useDispatch()
+    const { closeModal } = useModal()
     const sessionUser = useSelector((state) => state.session.user)
 
     const [dog, setDog] = useState({})
 
+    const inFavorites = sessionUser.favorites.includes(dogId.dogId)
+    console.log("CHECKING IF THE DOG ALREADY IS IN THE FAV", inFavorites)
+    const handleAdd = async () => {
+        // const favoriteDogsArr = [...sessionUser.favorites]
+        // console.log("THE FAVORITE DOG ARRAY IN THE DOG PAGE", favoriteDogsArr)
+        sessionStorage.setItem("favorites", JSON.stringify([...sessionUser.favorites, dogId.dogId]))
+        return dispatch(addToFavorite(dogId.dogId)).then(closeModal)
+    }
+    console.log("THE SESSION USER IN THE DOG PAGE", sessionUser)
+    console.log("THE dog id in the DOG PAGE", dogId)
 
+    const handleRemove = async () => {
+        const favoritesArr = sessionUser.favorites
+        console.log("TESTING THE FAVORITES ARR BEFORE SPLICE", favoritesArr)
+        for (let i = 0; i < favoritesArr.length; i++) {
+            if (dogId.dogId === favoritesArr[i]) {
+                favoritesArr.splice(i, 1)
+                console.log("TESTING THE FAVORITES ARR AFTER SPLICE", favoritesArr)
+
+            }
+        }
+        sessionStorage.setItem("favorites", JSON.stringify([...favoritesArr]))
+        return dispatch(removeFavoriteThunk(dogId.dogId)).then(closeModal)
+    }
 
     useEffect(() => {
         const getMatchedDogInfo = async () => {
@@ -20,7 +48,7 @@ export default function DogPage() {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify([dogId]),
+                body: JSON.stringify([dogId.dogId]),
                 credentials: "include",
             }
             const response = await fetch(`https://frontend-take-home-service.fetch.com/dogs`, matchOptions)
@@ -68,17 +96,29 @@ export default function DogPage() {
 
     return (
         <div className="matched-dog-container">
-            <h1>Congratulations! You have matched with {dog.name}!</h1>
+            <h1>{dog.name}</h1>
             <div className="matched-dog-info">
-                <img src={dog.img} alt={dog.name}></img>
-                <p>Name: {dog.name}</p>
-                <p>Age: {dog.age}</p>
-                <p>Breed: {dog.breed}</p>
-                <p>{`${dog.name} is located in ${dog.county} county, city of ${dog.city}, ${dog.state}`}</p>
+                <img src={dog?.img} alt={dog.name}></img>
+                <p>Name: {dog?.name}</p>
+                <p>Age: {dog?.age}</p>
+                <p>Breed: {dog?.breed}</p>
+                <p>{`${dog.name} is located in ${dog?.county} county, city of ${dog?.city}, ${dog?.state}`}</p>
+                {inFavorites &&
+                <p>{dog?.name} is already in your favorites</p>
+                }
             </div>
             <div className="matched-button-container">
-                <button onClick={() => history.push("/")}>Back</button>
-                <button onClick={() => alert(`An email has been sent to you with directions on how to bring ${dog.name} home!`)}>Adopt!</button>
+                {/* <button disabled={inFavorites} onClick={handleAdd}>Add to Favorites</button> */}
+                {inFavorites ?
+                <button onClick={handleRemove}>
+                    Remove from Favorites
+                </button>
+                :
+                <button onClick={handleAdd}>
+                    Add to Favorites
+                </button>
+
+                }
             </div>
         </div>
     )
