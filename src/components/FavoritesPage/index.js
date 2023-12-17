@@ -5,43 +5,43 @@ import DogPage from "../DogPage"
 
 export default function FavoritesPage() {
     const userFavorites = useSelector(state => state?.session?.user?.favorites)
-    const [favorites, setFavorites] = useState([])
-    const [favState, setFavState] = useState()
 
 
 
-    useEffect(() => {
-        const gettingFavList = async () => {
-            const requestOptionsPost = {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(userFavorites),
-                credentials: "include",
-            }
-            const responseDogList = await fetch("https://frontend-take-home-service.fetch.com/dogs", requestOptionsPost)
-            const favDogList = await responseDogList.json()
-            setFavorites(favDogList)
-        }
-        gettingFavList()
+    // useEffect(() => {
+    //     const gettingFavList = async () => {
+    //         const requestOptionsPost = {
+    //             method: "POST",
+    //             headers: {
+    //                 "Content-Type": "application/json"
+    //             },
+    //             body: JSON.stringify(userFavorites),
+    //             credentials: "include",
+    //         }
+    //         const responseDogList = await fetch("https://frontend-take-home-service.fetch.com/dogs", requestOptionsPost)
+    //         const favDogList = await responseDogList.json()
+    //         setFavorites(favDogList)
 
-    }, [])
-    console.log("THE FAV DOG LIST from USE SELECTOR", userFavorites)
-    console.log("THE FAV DOG LIST COUNT from USE SELECTOR", favorites)
+    //     }
+    //     gettingFavList()
+    // }, [])
 
+
+
+
+
+    console.log("THIS IS THE userFavorites useselector", userFavorites)
 
     return (
         <div>
             <h1>Favorites List</h1>
             <div className="search-results-container">
 
-                {favorites.length ?
-                    favorites.map(dog => (
+                {userFavorites.length ?
+                    userFavorites.map(dog => (
                         <OpenDogModal
                             dogInfo={dog}
-                            modalComponent={<DogPage dogId={dog.id} />}
-
+                            modalComponent={<DogPage dogId={dog} />}
                         />
                     ))
                     :

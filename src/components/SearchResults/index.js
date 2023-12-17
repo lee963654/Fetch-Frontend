@@ -10,7 +10,7 @@ const history = useHistory()
 const sessionUser = useSelector(state => state)
 
 
-console.log("INSIDE THE SEARCH RESULTS", sessionUser)
+console.log("INSIDE THE SEARCH RESULTS LOKING FOR DOG", results)
     return (
         <div className="search-results-container">
             {/* {results.map(dog => (
@@ -22,7 +22,7 @@ console.log("INSIDE THE SEARCH RESULTS", sessionUser)
 
                 <OpenDogModal
                     dogInfo={dog}
-                    modalComponent={<DogPage dogId={dog.id} />}
+                    modalComponent={<DogPage dogId={dog} />}
 
                 />
 

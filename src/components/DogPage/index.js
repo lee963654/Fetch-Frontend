@@ -7,7 +7,7 @@ import { useModal } from "../../context/Modal"
 import "./DogPage.css"
 
 
-export default function DogPage(dogId) {
+export default function DogPage({dogId}) {
     // const { dogId } = useParams()
     const history = useHistory()
     const dispatch = useDispatch()
@@ -16,12 +16,19 @@ export default function DogPage(dogId) {
 
     const [dog, setDog] = useState({})
 
-    const inFavorites = sessionUser.favorites.includes(dogId.dogId)
-
+    // const inFavorites = sessionUser.favorites.includes(dogId.dogId)
+    const inFavorites = () => {
+        for (let dog of sessionUser?.favorites) {
+            if (dogId.id === dog.id) return true
+        }
+        return false
+    }
+    console.log("THIS IS THE DOG OBJ IN THE DOGPAGE", dogId)
+    console.log("THIS IS THE SESSION USER", sessionUser)
     const handleAdd = async () => {
 
-        sessionStorage.setItem("favorites", JSON.stringify([...sessionUser.favorites, dogId.dogId]))
-        return dispatch(addToFavorite(dogId.dogId)).then(closeModal)
+        sessionStorage.setItem("favorites", JSON.stringify([...sessionUser.favorites, dogId]))
+        return dispatch(addToFavorite(dogId)).then(closeModal)
     }
 
 
@@ -29,12 +36,12 @@ export default function DogPage(dogId) {
         const favoritesArr = sessionUser.favorites
 
         for (let i = 0; i < favoritesArr.length; i++) {
-            if (dogId.dogId === favoritesArr[i]) {
+            if (dogId?.id === favoritesArr[i]?.id) {
                 favoritesArr.splice(i, 1)
             }
         }
         sessionStorage.setItem("favorites", JSON.stringify([...favoritesArr]))
-        return dispatch(removeFavoriteThunk(dogId.dogId)).then(closeModal)
+        return dispatch(removeFavoriteThunk(dogId)).then(closeModal)
     }
 
     useEffect(() => {
@@ -44,7 +51,7 @@ export default function DogPage(dogId) {
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify([dogId.dogId]),
+                body: JSON.stringify([dogId.id]),
                 credentials: "include",
             }
             const response = await fetch(`https://frontend-take-home-service.fetch.com/dogs`, matchOptions)
@@ -105,7 +112,7 @@ export default function DogPage(dogId) {
             </div>
             <div className="matched-button-container">
                 {/* <button disabled={inFavorites} onClick={handleAdd}>Add to Favorites</button> */}
-                {inFavorites ?
+                {inFavorites() ?
                 <button onClick={handleRemove}>
                     Remove from Favorites
                 </button>
