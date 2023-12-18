@@ -1,7 +1,7 @@
 
 # Fetch Front-End Take Home Exercise
 This is a simple webpage where users can browse through and potentially match with dogs from the database.
-Live site on 
+Live site on https://fetch-dog.onrender.com
 
 ## Getting Started
 1. Clone this repository (only this branch)
