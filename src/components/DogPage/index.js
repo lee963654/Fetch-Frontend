@@ -15,8 +15,8 @@ export default function DogPage({ dogId }) {
     const { closeModal } = useModal()
     const sessionUser = useSelector((state) => state.session.user)
     const [dog, setDog] = useState({})
-    console.log("CHECKING THE LENGTH OF FAVORITES ARR IN DOG PAGE", sessionUser)
 
+    // Checking to see if the dog is already in our favorites list
     const inFavorites = () => {
         for (let dog of sessionUser?.favorites) {
             if (dogId.id === dog.id) return true
@@ -25,7 +25,6 @@ export default function DogPage({ dogId }) {
     }
 
     const handleAdd = async () => {
-
         sessionStorage.setItem("favorites", JSON.stringify([...sessionUser.favorites, dogId]))
         return dispatch(addToFavorite(dogId)).then(closeModal)
     }
@@ -33,7 +32,6 @@ export default function DogPage({ dogId }) {
 
     const handleRemove = async () => {
         const favoritesArr = sessionUser.favorites
-
         for (let i = 0; i < favoritesArr.length; i++) {
             if (dogId?.id === favoritesArr[i]?.id) {
                 favoritesArr.splice(i, 1)

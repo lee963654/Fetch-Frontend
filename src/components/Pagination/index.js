@@ -7,7 +7,7 @@ export default function Pagination({ resultsPerPage, totalResults, handleSearch,
     const [currentPageStart, setCurrentPageStart] = useState(0)
     const [currentPageEnd, setCurrentPageEnd] = useState(11)
 
-
+    // Getting the page numbers
     const pageNumbers = []
     for (let i = 1; i <= Math.ceil(totalResults / resultsPerPage); i++) {
         pageNumbers.push(i)
@@ -31,7 +31,7 @@ export default function Pagination({ resultsPerPage, totalResults, handleSearch,
 
 
     useEffect(() => {
-
+        // Finding out where the page numbers should start and end in the middle of the block
         const pageBlockStart = () => {
 
             const lastPage = pageNumbers[pageNumbers.length - 1]
@@ -60,7 +60,7 @@ export default function Pagination({ resultsPerPage, totalResults, handleSearch,
             }
         }
         pageBlockStart()
-
+        // hasSubmitted function to allow for updates in state
         const hasSubmittedFunc = (hasSubmitted) => {
             if (hasSubmitted === true) {
                 setHasSubmitted(false)

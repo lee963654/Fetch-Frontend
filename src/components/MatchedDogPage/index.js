@@ -14,17 +14,16 @@ export default function MatchedDogPage() {
 
     const handleAdopt = async () => {
         const favoritesArr = sessionUser.favorites
-        console.log("THIS IS THE SESSION FAVORITS ARRAY", favoritesArr)
         for (let i = 0; i < favoritesArr.length; i++) {
             if (dogId === favoritesArr[i]?.id) {
                 favoritesArr.splice(i, 1)
             }
         }
+        // Removing the adopted dog from our favorites list
         sessionStorage.setItem("favorites", JSON.stringify([...favoritesArr]))
         dispatch(removeFavoriteThunk(dogId))
         alert(`We have sent an email to ${sessionUser?.email} with directions on how to bring ${dog?.name} home!`)
         history.push("/favorites")
-
     }
 
     useEffect(() => {
@@ -86,9 +85,6 @@ export default function MatchedDogPage() {
                 <p>Breed: {dog?.breed}</p>
                 <p>{`${dog.name} is located in ${dog?.county} county, city of ${dog?.city}, ${dog?.state}`}</p>
             </div>
-            {/* <div className="matched-button-container">
-                <button onClick={alert(`We have sent an email to ${sessionUser.email}`)}>Adopt</button>
-            </div> */}
             <button onClick={handleAdopt}>Adopt</button>
         </div>
     )

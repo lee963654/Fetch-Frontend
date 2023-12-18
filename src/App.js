@@ -15,16 +15,13 @@ function App() {
   const sessionUser = useSelector(state => state)
   const dispatch = useDispatch()
   const [isLoggedIn, setIsLoggedIn] = useState(false)
-
   const gettingUser = JSON.parse(sessionStorage.getItem("user"))
-
   const gettingFavorites = JSON.parse(sessionStorage.getItem("favorites"))
-  console.log("THIS IS GETTING THE session STORAGE for the user in THE APP PAGE", gettingUser)
-  console.log("THIS IS GETTING THE SESSION STORAGE FOR FAVORITES IN THE APP PAGE", gettingFavorites)
-  console.log("CHECKING THE IS LOGGED IN STATE", isLoggedIn)
+
 
 
   useEffect(() => {
+    // Getting the information from the session storage to put into the store
     const favoritesArr = gettingFavorites ? [...gettingFavorites] : []
     const restoreUserObj = {
       name: gettingUser?.name,

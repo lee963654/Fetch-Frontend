@@ -43,7 +43,7 @@ export default function Search() {
             setErrors("Maximum age must be less than minimum age")
             return
         }
-
+        // Setting up the query params to use in the fetch
         setResultsToPag(resultsPerPage)
         const queryParams = []
         const selectedAgeMin = ageMin ? `ageMin=${ageMin}` : ""
@@ -64,6 +64,7 @@ export default function Search() {
         const selectedQueryParams = queryParams.join("&")
 
         const response = await fetch(`https://frontend-take-home-service.fetch.com/dogs/search?${selectedQueryParams}`, requestOptions)
+        // If there is no fetch cookie, we will log out from the store and the session storage and get sent to the login page
         if (!response.ok) {
             dispatch(logoutThunk())
             sessionStorage.clear()
@@ -93,7 +94,7 @@ export default function Search() {
         setErrors("")
         const gettingAllBreeds = async () => {
             const allBreeds = await fetch("https://frontend-take-home-service.fetch.com/dogs/breeds", { credentials: "include" })
-
+            // Checking if the fetch cookie is still active
             if (allBreeds.ok) {
                 const allBreedList = await allBreeds.json()
                 setBreedList(allBreedList)

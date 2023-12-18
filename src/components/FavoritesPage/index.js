@@ -1,14 +1,16 @@
 import React from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { useHistory } from "react-router-dom"
 import OpenDogModal from "../OpenDogModal"
 import DogPage from "../DogPage"
 import "./FavoritesPage.css"
+import { logoutThunk } from "../../store/session"
 
 
 export default function FavoritesPage() {
     const userFavorites = useSelector(state => state?.session?.user?.favorites)
     const history = useHistory()
+    const dispatch = useDispatch
 
     const handleMatch = async () => {
         const dogIdArr = []
@@ -24,6 +26,11 @@ export default function FavoritesPage() {
             credentials: "include",
         }
         const dogRes = await fetch("https://frontend-take-home-service.fetch.com/dogs/match", requestOptionsPost)
+        if (!dogRes.ok) {
+            dispatch(logoutThunk())
+            sessionStorage.clear()
+            history.push("/")
+        }
         const matchedDog = await dogRes.json()
         history.push(`/dogs/${matchedDog.match}`)
     }

@@ -26,7 +26,7 @@ export default function LoginPage() {
             credentials: "include",
         }
         const response = await fetch("https://frontend-take-home-service.fetch.com/auth/login", requestOptions)
-
+        // Logging in, setting the session storage user with the user info
         if (response.ok) {
             dispatch(loginThunk(user))
             sessionStorage.setItem("user", JSON.stringify(user))

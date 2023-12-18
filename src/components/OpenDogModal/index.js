@@ -15,7 +15,7 @@ export default function OpenDogModal({
         setModalContent(modalComponent);
     };
 
-    //   return <button onClick={onClick}>{buttonText}</button>;
+
     return (
         <div className="dog-img-container" onClick={onClick}>
             <img src={dogInfo.img} alt="dog info"></img>
