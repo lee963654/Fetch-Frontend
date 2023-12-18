@@ -43,7 +43,7 @@ export default function LoginPage() {
 
 
     return (
-        <div className="login-page-container">
+        <div role="test" className="login-page-container">
             <h1>Fetch</h1>
             <section>
                 <p>
