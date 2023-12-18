@@ -15,7 +15,7 @@ export default function DogPage({ dogId }) {
     const { closeModal } = useModal()
     const sessionUser = useSelector((state) => state.session.user)
     const [dog, setDog] = useState({})
-
+    console.log("CHECKING THE LENGTH OF FAVORITES ARR IN DOG PAGE", sessionUser)
 
     const inFavorites = () => {
         for (let dog of sessionUser?.favorites) {
@@ -108,6 +108,9 @@ export default function DogPage({ dogId }) {
                 {inFavorites() &&
                     <p>{dog?.name} is already in your favorites</p>
                 }
+                {sessionUser?.favorites?.length > 99 &&
+                    <p>You cannot add anymore dogs to your favorites</p>
+                }
             </div>
             <div className="matched-button-container">
 
@@ -116,7 +119,7 @@ export default function DogPage({ dogId }) {
                         Remove
                     </button>
                     :
-                    <button onClick={handleAdd}>
+                    <button disabled={sessionUser?.favorites?.length > 99} onClick={handleAdd}>
                         Add
                     </button>
                 }

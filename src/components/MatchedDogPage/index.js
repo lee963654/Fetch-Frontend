@@ -9,7 +9,7 @@ export default function MatchedDogPage() {
     const history = useHistory()
     const dispatch = useDispatch()
     const sessionUser = useSelector(state => state.session.user)
-
+    const [loading, setLoading] = useState(false)
     const [dog, setDog] = useState({})
 
     const handleAdopt = async () => {
@@ -75,7 +75,6 @@ export default function MatchedDogPage() {
         matchedDog()
     }, [])
 
-    console.log("THIS IS THE DOG IN THE MATCHED DOG PAGE", dog)
 
     return (
         <div className="matched-dog-container">

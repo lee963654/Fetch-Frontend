@@ -9,12 +9,12 @@ export default function HeaderNav() {
     const history = useHistory()
     const dispatch = useDispatch()
     const sessionUser = useSelector(state => state?.session?.user)
-
+    console.log("THE SESSION USER IN THE HEADER", sessionUser)
 
     return (
         <header>
             <h1 onClick={() => sessionUser ? history.push("/home") : history.push("/")}>Fetch</h1>
-            {sessionUser &&
+            {sessionUser?.name &&
             <ProfileButton />
             }
 

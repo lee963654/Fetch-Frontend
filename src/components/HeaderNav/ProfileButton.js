@@ -58,6 +58,9 @@ export default function ProfileButton({ user }) {
                 <i className="fas fa-user-circle" />
             </button>
             <ul className={ulClassName} ref={ulRef}>
+                <li onClick={() => {closeMenu(); history.push("/home")}}>
+                    Home
+                </li>
                 <li onClick={() => {closeMenu(); history.push("/favorites")}}>
                     Favorites
                 </li>
