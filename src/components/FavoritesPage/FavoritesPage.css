@@ -1,0 +1,14 @@
+.favorite-dogs-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 5rem;
+}
+
+.favorite-dogs-container > p {
+    width: 32rem;
+}
+
+.favorite-dogs-container > button {
+    margin-bottom: 1rem;
+}

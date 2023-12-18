@@ -1,57 +1,40 @@
 import React, { useEffect, useState } from "react"
-import { useHistory } from "react-router-dom"
-import { useSelector, useDispatch } from "react-redux"
-import { addToFavorite, removeFavoriteThunk } from "../../store/session"
-import { useModal } from "../../context/Modal"
-import { logoutThunk } from "../../store/session"
-
-import "./DogPage.css"
+import { useParams, useHistory } from "react-router-dom"
+import { useDispatch, useSelector } from "react-redux"
+import { logoutThunk, removeFavoriteThunk } from "../../store/session"
 
 
-export default function DogPage({ dogId }) {
-
+export default function MatchedDogPage() {
+    const { dogId } = useParams()
     const history = useHistory()
     const dispatch = useDispatch()
-    const { closeModal } = useModal()
-    const sessionUser = useSelector((state) => state.session.user)
+    const sessionUser = useSelector(state => state.session.user)
+
     const [dog, setDog] = useState({})
 
-
-    const inFavorites = () => {
-        for (let dog of sessionUser?.favorites) {
-            if (dogId.id === dog.id) return true
-        }
-        return false
-    }
-
-    const handleAdd = async () => {
-
-        sessionStorage.setItem("favorites", JSON.stringify([...sessionUser.favorites, dogId]))
-        return dispatch(addToFavorite(dogId)).then(closeModal)
-    }
-
-
-    const handleRemove = async () => {
+    const handleAdopt = async () => {
         const favoritesArr = sessionUser.favorites
-
+        console.log("THIS IS THE SESSION FAVORITS ARRAY", favoritesArr)
         for (let i = 0; i < favoritesArr.length; i++) {
-            if (dogId?.id === favoritesArr[i]?.id) {
+            if (dogId === favoritesArr[i]?.id) {
                 favoritesArr.splice(i, 1)
             }
         }
         sessionStorage.setItem("favorites", JSON.stringify([...favoritesArr]))
-        return dispatch(removeFavoriteThunk(dogId)).then(closeModal)
+        dispatch(removeFavoriteThunk(dogId))
+        alert(`We have sent an email to ${sessionUser?.email} with directions on how to bring ${dog?.name} home!`)
+        history.push("/favorites")
+
     }
 
-
     useEffect(() => {
-        const getMatchedDogInfo = async () => {
+        const matchedDog = async () => {
             const matchOptions = {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify([dogId.id]),
+                body: JSON.stringify([dogId]),
                 credentials: "include",
             }
             const response = await fetch(`https://frontend-take-home-service.fetch.com/dogs`, matchOptions)
@@ -62,7 +45,6 @@ export default function DogPage({ dogId }) {
             }
             const matchedDog = await response.json()
             const matchedDogObj = matchedDog[0]
-
             const locationOptions = {
                 method: "POST",
                 headers: {
@@ -88,40 +70,27 @@ export default function DogPage({ dogId }) {
                 state: locationObj?.state,
                 zip_code: locationObj?.zip_code
             }
-
             setDog(newDogObj)
         }
-        getMatchedDogInfo()
-
+        matchedDog()
     }, [])
 
+    console.log("THIS IS THE DOG IN THE MATCHED DOG PAGE", dog)
 
     return (
         <div className="matched-dog-container">
-            <h1>{dog.name}</h1>
+            <h1>{`We have matched you with ${dog.name}!`}</h1>
             <div className="matched-dog-info">
                 <img src={dog?.img} alt={dog.name}></img>
                 <p>Name: {dog?.name}</p>
                 <p>Age: {dog?.age}</p>
                 <p>Breed: {dog?.breed}</p>
                 <p>{`${dog.name} is located in ${dog?.county} county, city of ${dog?.city}, ${dog?.state}`}</p>
-                {inFavorites() &&
-                    <p>{dog?.name} is already in your favorites</p>
-                }
             </div>
-            <div className="matched-button-container">
-
-                {inFavorites() ?
-                    <button onClick={handleRemove}>
-                        Remove
-                    </button>
-                    :
-                    <button onClick={handleAdd}>
-                        Add
-                    </button>
-                }
-                <button onClick={() => closeModal()}>Close</button>
-            </div>
+            {/* <div className="matched-button-container">
+                <button onClick={alert(`We have sent an email to ${sessionUser.email}`)}>Adopt</button>
+            </div> */}
+            <button onClick={handleAdopt}>Adopt</button>
         </div>
     )
 }

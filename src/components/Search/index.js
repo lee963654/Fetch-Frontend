@@ -64,6 +64,11 @@ export default function Search() {
         const selectedQueryParams = queryParams.join("&")
 
         const response = await fetch(`https://frontend-take-home-service.fetch.com/dogs/search?${selectedQueryParams}`, requestOptions)
+        if (!response.ok) {
+            dispatch(logoutThunk())
+            sessionStorage.clear()
+            history.push("/")
+        }
         const dogSearchResults = await response.json()
         setTotalResults(dogSearchResults.total)
 
@@ -82,44 +87,6 @@ export default function Search() {
 
     }
 
-    console.log("THIS IS THE SEARCH RESULTS IN THE SEARCH", searchResults)
-
-    const handleMatch = async () => {
-
-        const queryParams = []
-        const selectedAgeMin = ageMin ? `ageMin=${ageMin}` : ""
-        const selectedAgeMax = ageMax ? `ageMax=${ageMax}` : ""
-        const selectedBreed = breed ? `breeds=${breed}` : ""
-        const selectedSort = `sort=breed:${sortBreed}`
-        const selectedSize = `size=100`
-        if (selectedAgeMin) queryParams.push(selectedAgeMin)
-        if (selectedAgeMax) queryParams.push(selectedAgeMax)
-        if (selectedBreed) queryParams.push(selectedBreed)
-        queryParams.push(selectedSort)
-        queryParams.push(selectedSize)
-
-        const selectedQueryParams = queryParams.join("&")
-        const response = await fetch(`https://frontend-take-home-service.fetch.com/dogs/search?${selectedQueryParams}`, requestOptions)
-        if (!response.ok) history.push("/")
-        const dogMatchResults = await response.json()
-
-
-
-        const matchOptions = {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify([...dogMatchResults.resultIds]),
-            credentials: "include",
-        }
-        const singleDogMatch = await fetch(`https://frontend-take-home-service.fetch.com/dogs/match`, matchOptions)
-
-        const matchedDog = await singleDogMatch.json()
-
-        history.push(`/dogs/${matchedDog.match}`)
-
-    }
 
     useEffect(() => {
 
@@ -208,7 +175,7 @@ export default function Search() {
             </div>
             <div className="filter-buttons">
                 <button onClick={() => handleSearch(0, true)}>Search</button>
-                <button disabled={totalResults > 100 || totalResults === 0} onClick={handleMatch}>Match!</button>
+
 
             </div>
             <div>

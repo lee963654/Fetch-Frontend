@@ -1,3 +1,23 @@
+header {
+    border-bottom: 1px solid black;
+
+    display: flex;
+    align-items: center;
+
+    justify-content: space-between;
+    margin: 1rem;
+    width: 45rem;
+    position: sticky;
+    top: 0px;
+    margin-top: 0;
+    background-color:  antiquewhite;
+
+}
+
+header > h1 {
+    cursor: pointer;
+}
+
 .hidden {
     display: none;
 }
@@ -6,9 +26,17 @@
     border: 2px solid black;
     border-radius: .65rem;
     position: absolute;
-    top: 3rem;
-    right: .1rem;
-    width: 11rem;
+    list-style: none;
+    width: 5rem;
     align-content: center;
     background-color: white;
+    padding: 6px;
+
+}
+
+.profile-dropdown>li:hover {
+    cursor: pointer;
+    background-color: darkorange;
+    border-radius: 5px;
+
 }

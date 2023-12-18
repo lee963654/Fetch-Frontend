@@ -4,9 +4,10 @@ import { Route, Switch } from "react-router-dom"
 import LoginPage from "./components/LoginPage";
 import HomePage from "./components/HomePage";
 import { restoreUserThunk } from "./store/session";
-import DogPage from "./components/DogPage";
 import HeaderNav from "./components/HeaderNav";
 import FavoritesPage from "./components/FavoritesPage";
+import MatchedDogPage from "./components/MatchedDogPage";
+import "./index.css"
 
 
 
@@ -37,21 +38,21 @@ function App() {
 
 
   return (
-    <div>
+    <div className="main-app-container">
       <HeaderNav />
       {isLoggedIn &&
         <Switch>
-          <Route exact path="/login">
+          <Route exact path="/">
             <LoginPage />
           </Route>
-          <Route exact path="/">
+          <Route exact path="/home">
             <HomePage />
           </Route>
           <Route exact path="/favorites">
             <FavoritesPage />
           </Route>
           <Route exact path="/dogs/:dogId">
-            <DogPage />
+            <MatchedDogPage />
           </Route>
         </Switch>
 

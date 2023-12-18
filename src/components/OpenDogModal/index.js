@@ -3,7 +3,7 @@ import { useModal } from "../../context/Modal";
 
 export default function OpenDogModal({
     modalComponent, // component to render inside the modal
-    dogInfo, // text of the button that opens the modal
+    dogInfo, // for the dog img
     onButtonClick, // optional: callback function that will be called once the button that opens the modal is clicked
     onModalClose, // optional: callback function that will be called once the modal is closed
 }) {
