@@ -40,7 +40,7 @@ export default function Search() {
         }
 
         if (ageMax && ageMin && ageMax < ageMin) {
-            setErrors("Maximum age must be less than minimum age")
+            setErrors("Maximum age must be greater than minimum age")
             return
         }
         // Setting up the query params to use in the fetch
